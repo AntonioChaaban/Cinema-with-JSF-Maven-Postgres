@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Cadastro de Usuario</title>
+</h:head>
+<h:body style="margin: 0px;padding: 0px;background-color: #000000;">
+	<h:form>
+	<p:growl id="growl" showDetail="true" />
+	<p:menubar style="background-color: #000000;border-style: none;">
+         <p:menuitem outcome="/MenuPrincipal.xhtml">		
+      		<h:graphicImage name="/images/logo2.png" height="50"/>
+     	 </p:menuitem>
+     </p:menubar>
+     <center>
+     <div style="position: relative;left:-40px;width: 400px;">
+	        	<h1  style="position: relative;color:#FFFFFF;left:40px;top: 33px">Informe os dados do seu cartão abaixo</h1>
+	        	
+	        	<div style="position: relative;display: flex;flex-direction: column;width: 300px;left:40px;">
+					<p:inputText style="position: relative;top: 50px"
+							id="itNumeroNoCartao" 
+							value="#{cadastrarCartaoController.entity.numeroNoCartao}"
+							
+							placeholder="Numero no Cartão" >
+							</p:inputText>
+							
+							<p:message for="itNumeroNoCartao"/>
+		       	
+					<p:inputText style="position: relative;top: 50px"
+								id="itCvc" 
+								placeholder="cvc"
+								value="#{cadastrarCartaoController.entity.cvc}" />
+							<p:message for="itCvc"/>
+		
+					
+					<p:inputText style="position: relative;top: 50px"
+								id="itDataDeValidade" 
+								placeholder="Data de Validade"
+								value="#{cadastrarCartaoController.entity.dataDeValidade}" />
+							<p:message for="itDataDeValidade"/>
+					
+					<p:inputText style="position: relative;top: 50px"
+							id="itNomeNoCartao" 
+							placeholder="Nome no Cartão"
+							value="#{cadastrarCartaoController.entity.nomeNoCartao}" />
+						<p:message for="itNomeNoCartao"/>
+					
+					<p:commandButton value="Tudo Pronto!"
+							style="position: relative;top: 50px"
+							actionListener="#{cadastrarCartaoController.salvarCartao}" update="@form">
+						</p:commandButton>
+					<br></br>
+			        <br></br>
+			        <br></br>
+			        <br></br>
+			        <br></br>
+			        <br></br>
+			        <br></br>
+			        <br></br><br></br>
+			        <br></br>
+			        <br></br>
+			        <br></br>
+			        <br></br>
+			        
+				</div>
+	        </div>
+	    </center>
+	</h:form>
+</h:body>
+</html>

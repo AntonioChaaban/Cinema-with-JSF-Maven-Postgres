@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+	<persistence-unit name="Projeto1">
+	<class>br.unitins.projeto1.model.Usuario</class>
+	<class>br.unitins.projeto1.model.Cartao</class>
+	<class>br.unitins.projeto1.model.Filmes</class>
+	<class>br.unitins.projeto1.model.Sala</class>
+	<class>br.unitins.projeto1.model.Ingresso</class>
+	<class>br.unitins.projeto1.model.Sessao</class>
+	<class>br.unitins.projeto1.model.TipoSala</class>
+	<class>br.unitins.projeto1.model.ValorVenda</class>
+	<class>br.unitins.projeto1.model.DefaultEntity</class>
+	<class>br.unitins.projeto1.model.EsqueceuSenha</class>
+	<class>br.unitins.projeto1.model.Ticket</class>
+
+		<properties>
+			<!-- DB Driver -->
+			<property name="javax.persistence.jdbc.driver"
+				value="org.postgresql.Driver" />
+
+			<!-- BD Name -->
+			<property name="javax.persistence.jdbc.url"
+				value="jdbc:postgresql://localhost:5432/projetodb" />
+
+			<!-- DB User -->
+			<property name="javax.persistence.jdbc.user"
+				value="topicos2" />
+
+			<!-- DB Password -->
+			<property name="javax.persistence.jdbc.password"
+				value="123456" />
+
+			<!-- DB Dialect -->
+			<property name="hibernate.dialect"
+				value="org.hibernate.dialect.PostgreSQLDialect" />
+
+			<!-- create / create-drop / update / none-->
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+
+			<!-- Show SQL in console -->
+			<property name="hibernate.show_sql" value="true" />
+
+			<!-- Show SQL formatted -->
+			<property name="hibernate.format_sql" value="true" />
+		</properties>
+	</persistence-unit>
+</persistence>

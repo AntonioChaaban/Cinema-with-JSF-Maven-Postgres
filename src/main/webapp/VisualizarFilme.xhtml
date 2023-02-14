@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Hyper Filmes - Filmes</title>
+</h:head>
+<h:body style="margin: 0px;padding: 0px;background-color:#000000;">
+<style type="text/css">
+    .product-item .product-item-content {
+        border: none;
+        margin: .3rem;
+        text-align: center;
+        padding: 2rem 0;
+        background-color:#333333;
+    }
+
+    .product-item .product-image {
+        width: 80%;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
+    }
+	.imagem{
+		position: relative;
+	  	top: 0;
+	  	left: 0;
+		height: 500px;
+ 		width: 100%;
+	}
+	.imagem2{
+		position: absolute;
+	  	top: 400px;
+	  	left: 40px;
+	  	border: 2px green solid;
+		width: 16%;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
+	}
+	.imagem3{	
+		position: relative;
+	  	left: 10%;
+	  	height: 10%;
+ 		width: 10%;
+	}
+	.sobre-o-filme-titulo{
+		position: absolute;
+	  	top: 400px;
+	  	left: 20%;
+		width: 70%;
+	}
+	.sobre-o-filme{
+		column-count: 2;
+		width: 50%;
+		position: relative;
+		left: 20%;
+	}
+	.sinopse{
+	width: 50%;
+		position: relative;
+		left: 20%;
+	}
+	.pading{
+	 width: 150px;
+	 padding-left: 40%;
+	}
+	.frase-de-efeito{
+		column-count: 1;
+		width: 50%;
+		position: relative;
+		left: 12%;
+	}
+	.painel-sessoes{
+		color:#333333;
+		position: relative;
+		left: 12%;
+	}
+	.painel-principal {
+		background: #333333;
+	}
+	.retangulo {
+		position: relative;
+		border-radius: 8px;
+		opacity: 0.9;
+		left: 150px;
+		top: 20px;
+	  	height: 600px;
+	  	width: 700px;
+	  	background-color: #333333;
+	  	z-index: 1;
+	}
+</style>
+	<h:form>
+		<p:sidebar widgetVar="sidebar2" position="right">
+       		<h3>Menu Hyper Filmes</h3>
+       		<p:commandLink style="position: relative;top:7px;"
+				 action="EditarUsuario.xhtml?faces-redirect=true">Alterar perfil</p:commandLink>
+			<br></br>
+			<br></br>
+			<p:commandLink style="position: relative;top:7px;"
+			 action="CadastroCartao.xhtml?faces-redirect=true">Cadastrar Cartão</p:commandLink>
+			<br></br>
+			<br></br>
+			<p:commandLink style="position: relative;top:7px;"
+			 action="MenuPrincipal.xhtml?faces-redirect=true">Menu Principal</p:commandLink>
+			 <br></br>
+			<br></br>
+			<p:commandLink style="position: relative;top:7px;" rendered="#{visualizarFilmeController.usuario.perfil.id == 1}"
+			 action="MenuPrincipalAdm.xhtml?faces-redirect=true">Menu Principal Adm</p:commandLink>
+			 <br></br>
+			<br></br>
+			<p:commandLink style="position: relative;top:7px;"
+			 actionListener="#{visualizarFilmeController.sair}">Sair</p:commandLink>
+	    </p:sidebar>
+		<p:growl id="growl" showDetail="true" />
+		<p:menubar style="margin: 0px;padding: 0px;background-color:#333333;border-style: none;">
+            <p:menuitem value="Nossas Redes" disabled="true" style="background-color:#ff0000;"/>
+            <p:menuitem icon="pi pi-fw pi-facebook" url="https://www.facebook.com/"/>
+            <p:menuitem icon="pi pi-fw pi-twitter" url="https://twitter.com/"/>
+            <p:menuitem icon="pi pi-fw pi-instagram" url="https://www.instagram.com/"/>
+            <p:menuitem icon="pi pi-fw pi-youtube" url="https://www.youtube.com/"/>
+        </p:menubar>
+        <p:menubar style="background-color: #000000;border-style: none;">
+        	<p:menuitem outcome="/MenuPrincipal.xhtml">		
+	        	<h:graphicImage name="/images/logo2.png" height="50"/>
+        	</p:menuitem>
+            <p:menuitem value="CORPORATIVO" disabled="false" style="color: #ffffff;"/>
+            <p:menuitem value="LOCALIZAÇÃO" disabled="true"/>
+            <p:menuitem value="SNACK BAR" disabled="true"/>
+            <p:menuitem value="PROGRAMAÇÃO" disabled="true"/>
+            <f:facet name="options">
+                <p:commandButton rendered="#{visualizarFilmeController.usuarioLogado == false}" actionListener="#{menuPrincipalUsuarioController.login}" value="Login"  icon="pi pi-fw pi-user" styleClass="ui-button-help"/>
+                <p:commandButton rendered="#{visualizarFilmeController.usuarioLogado == true}" icon="pi pi-sliders-h" type="button" onclick="PF('sidebar2').show()" styleClass="p-mr-2" />
+            </f:facet>
+        </p:menubar>
+        <center>            
+			<h:graphicImage class="imagem" url="img-filmes?nome=#{visualizarFilmeController.entity.imagemBackground}.png"/>
+		</center>
+		<div>         
+			<h:graphicImage class="imagem2" url="img-filmes?nome=#{visualizarFilmeController.entity.imagemPoster}.png"/>
+		</div>
+		<div class="sobre-o-filme-titulo">
+			<h1 style="color:#FFFFFF">#{visualizarFilmeController.entity.nome}</h1>
+			<h3 style="color:#F0FFFF">#{visualizarFilmeController.entity.classificasao}</h3>
+			<h3 style="color:#F0FFFF">#{visualizarFilmeController.entity.genero}</h3>
+			<h3 style="color:#F0FFFF">#{visualizarFilmeController.entity.distribuidora}</h3>
+		</div>
+		<div class="sinopse">
+			<h1 style="color:#fe2712">Leia a sinopse</h1>
+			<h3 style="color:#FFFFFF">#{visualizarFilmeController.entity.sinopse}</h3>
+		</div>
+		
+		<div class="sobre-o-filme">
+			<br></br>
+			<div class="ui-input-icon-left">
+				<i class="pi pi-fw pi-users" style="color:#fe2712" />
+				<h3 class="pading" id="elenco" style="color:#FFFFFF">Elenco: #{visualizarFilmeController.entity.elenco}</h3>
+			</div>
+			<br></br>
+			<div class="ui-input-icon-left">
+				<i class="pi pi-fw pi-id-card" style="color:#fe2712" />
+				<h3 class="pading" id="diretor" style="color:#FFFFFF;">Diretor: #{visualizarFilmeController.entity.diretor}</h3>
+			</div>
+			<br></br>
+			<div class="ui-input-icon-left">
+				<i class="pi pi-fw pi-video" style="color:#fe2712" />
+				<h3 class="pading" style="color:#FFFFFF;">Genero: #{visualizarFilmeController.entity.genero}</h3>
+			</div>
+			
+			<br></br>
+			<div class="ui-input-icon-left">
+				<i class="pi pi-fw pi-clock" style="color:#fe2712" />
+				<h3 class="pading" style="color:#FFFFFF">Duração: #{visualizarFilmeController.entity.durasao}</h3>
+			</div>
+			<br></br>
+			<div class="ui-input-icon-left">
+				<i class="pi pi-fw pi-home" style="color:#fe2712" />
+				<h3 class="pading" style="color:#FFFFFF">Distribuidora: #{visualizarFilmeController.entity.distribuidora}</h3>
+			</div>
+			<br></br>
+			<div class="ui-input-icon-left">
+				<i class="pi pi-fw pi-star-fill" style="color:#fe2712" />
+				<h3 class="pading" style="color:#FFFFFF">Classificação: #{visualizarFilmeController.entity.classificasao}</h3>
+			</div>
+		</div>
+		<br></br>
+		<br></br>
+		<p:commandLink actionListener="#{menuPrincipalUsuarioController.filmeSelecionado(list)}" style="margin: 0px;padding: 0px;border-style: none;">
+          	<center>
+                   
+				<h:graphicImage name="images/cupon2.png" style="position:absolute;left: 70%;top:150%;"/>
+			</center>			
+              
+        </p:commandLink>
+		<div class="frase-de-efeito" >
+			<h1  style="color:#FFFFFF">Escolha a sua sessão abaixo!</h1>
+			<h3  style="color:#FF00FF">Agora você pode comprar os seus ingressos pelo nosso site!</h3>
+		</div>
+		
+		<div class="retangulo">
+			<h1  style="position: relative;color:#FFFFFF;left:70px;top: 33px">Sessões</h1>
+			<p:datePicker style="left:50px;top: 33px;" value="#{visualizarFilmeController.dataDaPesquisa}" placeholder="Data Da sua Sessão" />
+			<p:commandButton style="left:50px;top: 34px;" value="Atualizar Tabela" update="@form"
+				actionListener="#{visualizarFilmeController.pesquisarSessao}">
+				<f:ajax execute="@this" render="@form"/>
+			</p:commandButton>
+			<p:dataTable id="itTabela" style="left: 40px;width:620px;border: none;position: relative;top: 34px;" var="list" value="#{visualizarFilmeController.listaSessao}" scrollable="true" scrollHeight="330"
+              	 rowKey="#{list.id}" selection="#{visualizarFilmeController.sessaoEscolhida}" selectionMode="single">
+              	 
+              	 	<p:ajax event="rowSelect" listener="#{visualizarFilmeController.sessaoSelecionada}" update="@form"/>
+              	 	<p:column headerText="Sala">
+	                <h:outputText value="#{list.sala.nomeDaSala}" />
+	            </p:column>
+	            <p:column headerText="Filme">
+	                <h:outputText value="#{list.filme.nome}" />
+	            </p:column>
+	
+	            <p:column headerText="Inicio da Sessão">
+	                <h:outputText value="#{list.dataInicioSessao}" />
+	            </p:column>
+	            
+	            <p:column headerText="Termino da Sessão">
+	                <h:outputText value="#{list.dataTerminoSessao}" />
+	            </p:column>
+	        </p:dataTable>
+			
+		</div>
+		<br></br>
+		<br></br>
+		<br></br>
+		<br></br>
+		<br></br>
+		<br></br>
+	</h:form>
+	
+	<script>
+	</script>
+</h:body>
+</html>

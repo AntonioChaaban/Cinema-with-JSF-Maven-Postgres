@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Cadastro de Sala</title>
+</h:head>
+<h:body style="margin: 0px;padding: 0px;background-color:#000000;" >
+<style type="text/css">
+	.retangulo {
+		position: relative;
+		border-radius: 8px;
+		opacity: 0.9;
+	  	height: 700px;
+	  	width: 700px;
+	  	background-color:#333333;
+	  	
+	}
+	.retangulo2 {
+		position: relative;
+		border-radius: 8px;
+		top: 20px;
+		left:40px;
+	  	height: 200px;
+	  	width: 550px;
+	  	background-color:#ff0000;
+	}
+</style>
+	<h:form>
+		<p:sidebar widgetVar="sidebar2" position="right">
+       		<h3>Menu Hyper Filmes</h3>
+       		<p:commandLink style="position: relative;top:7px;"
+				 action="EditarUsuario.xhtml?faces-redirect=true">Alterar perfil</p:commandLink>
+			<br></br>
+			<br></br>
+			<p:commandLink style="position: relative;top:7px;"
+			 action="CadastroCartao.xhtml?faces-redirect=true">Cadastrar Cartão</p:commandLink>
+			<br></br>
+			<br></br>
+			<p:commandLink style="position: relative;top:7px;"
+			 action="MenuPrincipal.xhtml?faces-redirect=true">Menu Principal</p:commandLink>
+			 <br></br>
+			<br></br>
+			<p:commandLink style="position: relative;top:7px;" rendered="#{comprarIngressoController.usuario.perfil.id == 1}"
+			 action="MenuPrincipalAdm.xhtml?faces-redirect=true">Menu Principal Adm</p:commandLink>
+			 <br></br>
+			<br></br>
+			<p:commandLink style="position: relative;top:7px;"
+			 actionListener="#{comprarIngressoController.sair}">Sair</p:commandLink>
+	    </p:sidebar>
+		<p:growl id="growl" showDetail="true" />
+		<p:menubar style="margin: 0px;padding: 0px;background-color:#333333;border-style: none;">
+            <p:menuitem value="Nossas Redes" disabled="true" style="background-color:#ff0000;"/>
+            <p:menuitem icon="pi pi-fw pi-facebook" url="https://www.facebook.com/"/>
+            <p:menuitem icon="pi pi-fw pi-twitter" url="https://twitter.com/"/>
+            <p:menuitem icon="pi pi-fw pi-instagram" url="https://www.instagram.com/"/>
+            <p:menuitem icon="pi pi-fw pi-youtube" url="https://www.youtube.com/"/>
+        </p:menubar>
+        <p:menubar style="background-color: #000000;border-style: none;">
+            <p:menuitem outcome="/MenuPrincipal.xhtml">		
+	        	<h:graphicImage name="/images/logo2.png" height="50"/>
+        	</p:menuitem>
+            <p:menuitem value="CORPORATIVO" disabled="false" style="color: #ffffff;"/>
+            <p:menuitem value="LOCALIZAÇÃO" disabled="true"/>
+            <p:menuitem value="SNACK BAR" disabled="true"/>
+            <p:menuitem value="PROGRAMAÇÃO" disabled="true"/>
+            <f:facet name="options">
+                <p:commandButton rendered="#{comprarIngressoController.usuarioLogado == false}" actionListener="#{menuPrincipalUsuarioController.login}" value="Login" icon="pi pi-fw pi-user" styleClass="ui-button-help"/>
+                <p:commandButton rendered="#{comprarIngressoController.usuarioLogado == true}" icon="pi pi-sliders-h" type="button" onclick="PF('sidebar2').show()" styleClass="p-mr-2" />
+            </f:facet>
+        </p:menubar>
+	<center>
+		<h:panelGrid style="border: none;margin: 0;padding: 0;" id="grid44" columns="2" >	
+
+			<h:panelGrid style="border: none;margin: 0;padding: 0;" id="grid" columns="1" >
+				<p:dataView style="top:-300px;position: relative ;height: 200px;width: 602px;bottom: 100px;" var="product" value="#{comprarIngressoController.vi}" rows="#{comprarIngressoController.totalCadeiras}"
+					multiViewState="true" 
+                    gridIcon="pi pi-th-large" listIcon="pi pi-bars">
+                    
+                     <p:dataViewGridItem columns="#{comprarIngressoController.totalColunas}">
+                      	<div class="product-grid-item card border-1">
+                      	
+                      	<p:commandButton style="height: 45px;width: 60px;" value="#{product.letraFileira}#{product.numeroDaPoltrona}"
+                      	 actionListener="#{comprarIngressoController.atualizarTabela(product)}" styleClass="#{product.icon}" disabled="#{product.ocupado == true}">
+                      		<f:ajax execute="@this" render="@form"/>
+                      	</p:commandButton>
+                      	
+                      	</div>
+		            </p:dataViewGridItem>
+                 </p:dataView>
+			</h:panelGrid>
+
+			<h:panelGrid>
+			
+				<div class="retangulo">
+					<h1  style="position: relative;color:#FFFFFF;left:40px;top: 33px">Ingressos</h1>
+					
+					<div class="retangulo2">
+						<h1  style="position: relative;color:#FFFFFF;left:70px;top: 33px">Filme</h1>
+						<h3 style="position: relative;color:#FFFFFF;left:70px;top: 10px">Fime:#{comprarIngressoController.nomeDoFilme}</h3>
+						<h3 style="position: relative;color:#FFFFFF;left:70px;">Horario:#{comprarIngressoController.horario}</h3>
+						<h3 style="position: relative;color:#FFFFFF;left:70px;bottom: 15px;">Sala:#{comprarIngressoController.sala}</h3>
+						<h3 style="position: relative;color:#FFFFFF;left:70px;bottom: 30px;">Tipo de Sessao:#{comprarIngressoController.tipoDeSessao}</h3>
+					</div>
+					<p:dataTable id="itTabela" style="left: 40px;width:620px;border: none;position: relative; bottom: 420px;" var="list"
+					 value="#{comprarIngressoController.listaIngressos}" rowKey="#{list.id}"
+					 scrollable="true" scrollHeight="100">
+					 
+			            <p:column headerText="Fileira">
+			                <h:outputText value="#{list.letraDaFileiraIngresso}" />
+			            </p:column>
+			
+			            <p:column headerText="Numero da poltrona">
+			                <h:outputText value="#{list.numeroDePoltronasIngresso}" />
+			            </p:column>
+			        </p:dataTable>
+			        <p:commandButton style="position: relative;left: 40px; bottom: 420px;" value="Comprar" update="@form"
+						actionListener="#{comprarIngressoController.comprar}">
+						<f:ajax execute="@this" render="@form"/>
+					</p:commandButton>
+				</div>
+				
+			</h:panelGrid>
+			
+			</h:panelGrid>
+		</center>
+	</h:form>
+</h:body>
+</html>

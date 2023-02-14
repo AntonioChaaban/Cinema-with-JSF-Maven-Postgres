@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Login</title>
+</h:head>
+<h:body>
+<style type="text/css">
+	.imagem{
+		position: absolute;
+	  	top: 0;
+	  	left: 0;
+		height: 100%;
+ 		width: 100%;
+ 		filter: brightness(50%);
+ 		z-index: -1;
+	}
+	.imagem2{
+		position: static;
+	  	top: 10;
+	  	left: 30px;
+ 		width: 8%;
+ 		z-index: -1;
+	}
+	.retangulo {
+		position: relative;
+		border-radius: 8px;
+		opacity: 0.9;
+		top: -40px;
+	  	height: 498px;
+	  	width: 600px;
+	  	background-color: #000000;
+	  	z-index: 1;
+	}
+	
+	.buton{
+		position: relative;
+		bottom: 400px;
+		right: 10px;
+		opacity: 1;
+		top: 10px;	
+		z-index: 1;
+	}
+</style>
+	<h:form>
+		<p:growl id="growl" showDetail="true" />
+		<h:graphicImage class="imagem" name="images/login.jpg"/>
+		<h:graphicImage class="imagem2" name="images/logo.png"/>
+		<center>
+			<div class="retangulo">
+				<br></br>
+				<h1 style="color:#FFFFFF">Filmes e muito mais!!!</h1>
+				<h3 style="color:#FFFFFF;position:relative;">Compre aonde quiser. Para assistir nos nossos cinemas.</h3>
+				<h3 style="color:#FFFFFF;position:relative;top:-10px">Pronto para comessar?</h3> 
+				<h3 style="color:#FFFFFF;position:relative;top:-30px">Informe seus dados abaixo e crie uma conta</h3>
+				
+					<p:inputText style="position:relative;top:-30px"
+							id="itNome" 
+							value="#{cadastroUsuarioController.entity.nome}" placeholder="Nome" />
+							<p:message for="itNome"/>
+				<br></br>
+				<p:inputText style="position:relative;top:-25px"
+							id="itSobrenome" 
+							value="#{cadastroUsuarioController.entity.sobreNome}"  placeholder="Sobrenome"/>
+						<p:message for="itSobrenome"/>
+				<br></br>
+				<p:inputText style="position:relative;top:-20px"
+							id="itEmail" 
+							value="#{cadastroUsuarioController.entity.email}" placeholder="E-mail"/>
+						<p:message for="itEmail"/>
+				<br></br>
+				<p:password   
+							id="itSenha" 
+							value="#{cadastroUsuarioController.entity.senha}" 
+							toggleMask="true"
+							redisplay="true"
+							placeholder="Senha"/>
+						<p:message for="itSenha"/>
+				<br></br>
+				<br></br>
+				<p:inputText 
+							id="itDicaSenha" 
+							value="#{cadastroUsuarioController.entity.dicaSenha}" placeholder="Dica Para senha"/>
+						<p:message for="itDicaSenha"/>
+				<br></br>
+				<div class="buton" >
+					<p:commandButton value="Tudo Pronto!"
+							disabled="#{cadastroUsuarioController.entity.id != null}"
+							actionListener="#{cadastroUsuarioController.salvarComTransisao}" update="@form">
+						</p:commandButton>
+					<br></br>
+				</div>
+			</div>
+		</center>	
+		
+	</h:form>
+</h:body>
+</html>

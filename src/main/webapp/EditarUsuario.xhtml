@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Cadastro de Usuario</title>
+</h:head>
+<h:body style="margin: 0px;padding: 0px;background-color: #000000;">
+	<h:form>
+	<p:growl id="growl" showDetail="true" />
+		<p:menubar style="margin: 0px;padding: 0px;background-color:#333333;border-style: none;">
+            <p:menuitem value="Nossas Redes" disabled="true" style="background-color:#ff0000;"/>
+            <p:menuitem icon="pi pi-fw pi-facebook" url="https://www.facebook.com/"/>
+            <p:menuitem icon="pi pi-fw pi-twitter" url="https://twitter.com/"/>
+            <p:menuitem icon="pi pi-fw pi-instagram" url="https://www.instagram.com/"/>
+            <p:menuitem icon="pi pi-fw pi-youtube" url="https://www.youtube.com/"/>
+        </p:menubar>
+        <p:menubar style="background-color: #000000;border-style: none;">
+            <p:menuitem outcome="/MenuPrincipal.xhtml">		
+	        	<h:graphicImage name="/images/logo2.png" height="50"/>
+        	</p:menuitem>
+            <p:menuitem value="CORPORATIVO" disabled="false" style="color: #ffffff;"/>
+            <p:menuitem value="LOCALIZAÇÃO" disabled="true"/>
+            <p:menuitem value="SNACK BAR" disabled="true"/>
+            <p:menuitem value="PROGRAMAÇÃO" disabled="true"/>
+        </p:menubar>
+
+	        <div style="position: relative;left:200px;top:10px;width: 400px;">
+	        	<h1  style="position: relative;color:#FFFFFF;left:40px;top: 33px">Editar perfil</h1>
+	        	<h3  style="position: relative;color:#A9A9A9;left:40px;top: 10px">Selecione o que deseja alterar</h3>
+	        	
+	        	<div style="position: relative;display: flex;flex-direction: column;width: 300px;left:60px;">
+					<p:inputText style="position: relative;top: 50px"
+						id="itNome" 
+						value="#{editarUsuarioController.entity.nome}" placeholder="#{editarUsuarioController.entity.nome}" />
+					<p:message for="itNome"/>
+		       	
+					<p:inputText style="position: relative;top: 50px"
+						id="itSobrenome" 
+						value="#{editarUsuarioController.entity.sobreNome}" placeholder="#{editarUsuarioController.entity.sobreNome}"/>
+					<p:message for="itSobrenome"/>
+		
+				
+					<p:inputText style="position: relative;top: 50px"
+						id="itEmail" 
+						value="#{editarUsuarioController.entity.email}" placeholder="#{editarUsuarioController.entity.email}"/>
+					<p:message for="itEmail"/>
+					
+					<p:commandButton value="OK!" 
+						style="position: relative;top: 50px"
+						disabled="#{editarUsuarioController.entity.id == null}"
+						actionListener="#{editarUsuarioController.salvarUsuario}">
+					</p:commandButton>
+					
+					<p:commandButton value="Alterar Senha!" 
+						style="position: relative;top: 66px" 
+						styleClass="ui-button-help"
+						disabled="#{editarUsuarioController.entity.id == null}"
+						action="ConfirmarPerfil.xhtml?faces-redirect=true">
+					</p:commandButton>
+					<br></br>
+			        <br></br>
+			        <br></br>
+			        <br></br>
+			        <br></br>
+			        <br></br>
+			        <br></br>
+			        <br></br><br></br>
+			        <br></br>
+			        <br></br>
+			        <br></br>
+			        <br></br>
+			        
+				</div>
+	        </div>
+	        
+	</h:form>
+</h:body>
+</html>

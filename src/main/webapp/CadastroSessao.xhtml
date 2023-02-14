@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Cadastrar Sessões</title>
+</h:head>
+<h:body style="margin: 0px;padding: 0px;background-color:#333333;">
+	<h:form>
+		<p:growl id="growl" showDetail="true" />
+		<p:sidebar widgetVar="sidebar2" position="right">
+       		<h3>Menu Administrador</h3>
+       		<p:commandLink style="position: relative;top:7px;"
+				 action="EditarUsuario.xhtml?faces-redirect=true">Alterar perfil</p:commandLink>
+			<br></br>
+			<br></br>
+			<p:commandLink style="position: relative;top:7px;"
+			 action="CadastroCartao.xhtml?faces-redirect=true">Cadastrar Cartão</p:commandLink>
+			<br></br>
+			<br></br>
+			<p:commandLink style="position: relative;top:7px;"
+			 action="MenuPrincipal.xhtml?faces-redirect=true">Menu Principal</p:commandLink>
+			 <br></br>
+			<br></br>
+			<p:commandLink style="position: relative;top:7px;" rendered="#{cadastrarSessaoController.usuario.perfil.id == 1}"
+			 action="MenuPrincipalAdm.xhtml?faces-redirect=true">Menu Principal Adm</p:commandLink>
+			 <br></br>
+			<br></br>
+			<p:commandLink style="position: relative;top:7px;"
+			 actionListener="#{cadastrarSessaoController.sair}">Sair</p:commandLink>
+	    </p:sidebar>
+		<p:menubar style="background-color: #000000;border-style: none;">
+            <p:menuitem outcome="/MenuPrincipalAdm.xhtml">		
+	        	<h:graphicImage name="/images/logo2.png" height="50"/>
+        	</p:menuitem>
+            <f:facet name="options">
+                <p:commandButton icon="pi pi-sliders-h" type="button" onclick="PF('sidebar2').show()" styleClass="p-mr-2" />
+            </f:facet>
+        </p:menubar>
+			<center>
+			<p:panel header="#{cadastrarSessaoController.sala.nomeDaSala}" style="position:relative;top: 10px;width:800px;" >
+					<h:panelGrid columns="2" id="grid2">
+						<p:panel header="Sessao" style="width:750px;">
+							<h:panelGrid columns="4" id="grid20">
+								<p:outputLabel value="Tipo de Sessão" />
+								<p:selectOneMenu id="itTipoDeSessao" value="#{cadastrarSessaoController.tipoDeSessao}">
+									<f:selectItem itemLabel="Select One" itemValue=""/>
+				                    <f:selectItems value="#{cadastrarSessaoController.tiposDeSessoes}"/>
+				                    <f:ajax execute="@this" listener="#{cadastrarSessaoController.atualizarValorVenda}" render="@form"/>
+			                	</p:selectOneMenu>
+								
+								<p:outputLabel value="Filme para a sessão:" />
+								<p:selectOneMenu id="itFilmes" value="#{cadastrarSessaoController.filme}">
+									<f:selectItem itemLabel="Select One" itemValue=""/>
+				                    <f:selectItems value="#{cadastrarSessaoController.listaNomeFilmes}"/>
+				                    <f:ajax execute="@this" listener="#{cadastrarSessaoController.atualizarValorVenda}" render="@form"/>
+			                	</p:selectOneMenu>
+								
+								<p:outputLabel value="Horario de inicio da Sessão"/>
+	              				<p:datePicker id="itInicio" value="#{cadastrarSessaoController.entity.dataInicioSessao}" showTime="true">
+	              				
+	              				</p:datePicker>
+								
+								<p:outputLabel value="Horario de termino da Sessão" />
+								<p:datePicker id="itTermino" value="#{cadastrarSessaoController.entity.dataTerminoSessao}" showTime="true">
+								
+								</p:datePicker>
+								
+								<p:outputLabel value="Valor Inteira:" />
+								<p:outputLabel value="#{cadastrarSessaoController.entity.valorVenda.valorDaInteira}" />
+								
+								<p:outputLabel value="Valor Meia:" />
+								<p:outputLabel value="#{cadastrarSessaoController.entity.valorVenda.valorDaMedia}" />
+							</h:panelGrid>
+						</p:panel>
+					</h:panelGrid>
+					<f:facet name="footer">
+					<center>
+						<p:commandButton value="Cadastrar" update="@form"
+							actionListener="#{cadastrarSessaoController.salvar}">
+							<f:ajax execute="@this" render="@form"/>
+						</p:commandButton>
+						<p:commandButton value="excluir" update="@form"
+							disabled="#{cadastrarSessaoController.entity.id == null}"
+							actionListener="#{cadastrarSessaoController.excluirComValidasao}" >
+							<f:ajax execute="@this" render="@form"/>
+						</p:commandButton>
+						<p:commandButton value="Limpar" update="@form"
+							actionListener="#{cadastrarSessaoController.limpar}">
+							<f:ajax execute="@this" render="@form"/>
+						</p:commandButton>
+					</center>
+				</f:facet>
+			</p:panel>
+			</center>
+			<center>
+						<p:commandButton value="Pesquisar Sessoes" update="@form"
+							actionListener="#{cadastrarSessaoController.pesquisarSessoes}">
+							<f:ajax execute="@this" render="@form"/>
+						</p:commandButton>
+			</center>
+			<p:confirmDialog rendered="#{cadastrarSessaoController.abirDialog}" visible="true" style="width:500px;height:600px;" 
+					id="dialog" widgetVar="dlg" resizable="false" draggable="true">
+	               	
+	                	<p:dataTable id="dt-Sessoes" widgetVar="dtSessoes" var="list" value="#{cadastrarSessaoController.listaSessao}" scrollable="true" scrollHeight="150"
+	                	 rowKey="#{list.id}" selection="#{cadastrarSessaoController.sessaoEscolhida}" selectionMode="single" style="width:1000px;height:370px;" reflow="true">
+	                	 
+	                	 	 <f:facet name="header">
+				                <div class="sessoes-top-tabela">
+				                    <span style="font-weight: bold">Sessões</span>
+				
+				                    <span class="filter-container ui-input-icon-left">
+				                        <i class="pi pi-search"></i>
+				                        <p:inputText 
+											id="itPesquisa" 
+											value="#{cadastrarSessaoController.pesquisaNomeFilme}"
+											placeholder="Search"/>
+				                    </span>
+
+				
+									<span class="filter-container ">
+				                        <p:outputLabel value="Pesquise as Sessões por data"/>
+                						<p:datePicker value="#{cadastrarSessaoController.dataDaPesquisa}" />
+				                    </span>
+				                    <br></br>
+				                    <center>
+					                    <p:commandButton value="Pesquisar" update="@form"
+											actionListener="#{cadastrarSessaoController.pesquisarSessao}">
+											<f:ajax execute="@this" render="@form @dt-Sessoes"/>
+										</p:commandButton>
+									</center>
+				                </div>
+				            </f:facet>
+				            
+	                	 	<p:ajax event="rowSelect" listener="#{cadastrarSessaoController.sessaoSelecionada}" update="@form"/>
+				            <p:column headerText="Filme" filterable="false">
+				                <h:outputText value="#{list.filme.nome}" />
+				            </p:column>
+				
+				            <p:column headerText="Inicio da Sessão">
+				                <h:outputText value="#{list.dataInicioSessao}" />
+				            </p:column>
+				            
+				            <p:column headerText="Termino da Sessão">
+				                <h:outputText value="#{list.dataTerminoSessao}" />
+				            </p:column>
+				        </p:dataTable>
+			 
+			</p:confirmDialog>
+	</h:form>
+</h:body>
+</html>

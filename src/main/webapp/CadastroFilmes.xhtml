@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Cadastro de Filmes</title>
+</h:head>
+<h:body style="margin: 0px;padding: 0px;background-color:#333333;">
+<style type="text/css">
+	#dialog2{
+		top: 10px !important;
+	}
+	
+</style>
+	<h:form>
+		<p:growl id="growl" showDetail="true" />
+		<p:sidebar widgetVar="sidebar2" position="right">
+       		<h3>Menu Administrador</h3>
+       		<p:commandLink style="position: relative;top:7px;"
+				 action="EditarUsuario.xhtml?faces-redirect=true">Alterar perfil</p:commandLink>
+			<br></br>
+			<br></br>
+			<p:commandLink style="position: relative;top:7px;"
+			 action="CadastroCartao.xhtml?faces-redirect=true">Cadastrar Cartão</p:commandLink>
+			<br></br>
+			<br></br>
+			<p:commandLink style="position: relative;top:7px;"
+			 action="MenuPrincipal.xhtml?faces-redirect=true">Menu Principal</p:commandLink>
+			 <br></br>
+			<br></br>
+			<p:commandLink style="position: relative;top:7px;" rendered="#{cadastrarFilmeController.usuario.perfil.id == 1}"
+			 action="MenuPrincipalAdm.xhtml?faces-redirect=true">Menu Principal Adm</p:commandLink>
+			 <br></br>
+			<br></br>
+			<p:commandLink style="position: relative;top:7px;"
+			 actionListener="#{cadastrarFilmeController.sair}">Sair</p:commandLink>
+	    </p:sidebar>
+		<p:menubar style="background-color: #000000;border-style: none;">
+            <p:menuitem outcome="/MenuPrincipalAdm.xhtml">		
+	        	<h:graphicImage name="/images/logo2.png" height="50"/>
+        	</p:menuitem>
+            <f:facet name="options">
+                <p:commandButton icon="pi pi-sliders-h" type="button" onclick="PF('sidebar2').show()" styleClass="p-mr-2" />
+            </f:facet>
+        </p:menubar>
+		<center>
+		<h:panelGrid id="grid234234234" columns="2">
+			<p:panel header="Cadastro de Filmes" style="position:relative;top: 10px;width:400px;">
+				<h:panelGrid id="grid" columns="2">
+					<p:outputLabel value="Nome: " />
+					<h:panelGroup>
+						<p:inputText 
+							id="itNome" 
+							value="#{cadastrarFilmeController.entity.nome}" />
+							<p:message for="itNome"/>
+					</h:panelGroup>
+				
+					
+					<p:outputLabel value="Diretor: " />
+					<h:panelGroup>
+						<p:inputText 
+							id="itDiretor" 
+							value="#{cadastrarFilmeController.entity.diretor}" />
+						<p:message for="itDiretor"/>
+					</h:panelGroup>
+					
+					<p:outputLabel value="Elenco: " />
+					<h:panelGroup>
+						<p:inputText 
+							id="itElenco" 
+							value="#{cadastrarFilmeController.entity.elenco}" />
+						<p:message for="itElenco"/>
+					</h:panelGroup>
+					
+					<p:outputLabel value="Genero: " />
+					<h:panelGroup>
+						<p:inputText 
+							id="itGenero" 
+							value="#{cadastrarFilmeController.entity.genero}" />
+						<p:message for="itGenero"/>
+					</h:panelGroup>
+					
+					<p:outputLabel value="Classificação: " />
+					<h:panelGroup>
+						<p:inputText   
+							id="itClassificasao" 
+							value="#{cadastrarFilmeController.entity.classificasao}"/>
+						<p:message for="itClassificasao"/>
+					</h:panelGroup>
+					
+					<p:outputLabel value="Distribuidora: " />
+					<h:panelGroup>
+						<p:inputText 
+							id="itDistribuidora" 
+							value="#{cadastrarFilmeController.entity.distribuidora}" />
+						<p:message for="itDistribuidora"/>
+					</h:panelGroup>
+					
+					<p:outputLabel value="Duração" />
+					<h:panelGroup>
+						<p:inputText 
+							id="itDurasao" 
+							value="#{cadastrarFilmeController.entity.durasao}" />
+						<p:message for="itDurasao"/>
+					</h:panelGroup>
+
+					<p:outputLabel value="Sinopse:" />
+					<h:panelGroup>
+						<p:inputTextarea 
+							id="itSinopse" 
+							value="#{cadastrarFilmeController.entity.sinopse}" />
+						<p:message for="itSinopse"/>
+					</h:panelGroup>
+				</h:panelGrid>
+				<f:facet name="footer">
+					<center>
+						<p:commandButton value="Cadastrar/Habilitar" update="@form"
+							disabled="#{cadastroUsuarioController.entity.id != null}"
+							actionListener="#{cadastrarFilmeController.salvarFilmes}">
+							<f:ajax execute="@this" render="@form"/>
+						</p:commandButton>
+						<p:commandButton value="Tirar de Cartaz" update="@form"
+							disabled="#{cadastrarFilmeController.entity.id == null}"
+							actionListener="#{cadastrarFilmeController.desabilitar}" >
+							<f:ajax execute="@this" render="@form"/>
+						</p:commandButton>
+						<br></br>
+						<p:commandButton value="Limpar" update="@form"
+							actionListener="#{cadastrarFilmeController.limpar}">
+							<f:ajax execute="@this" render="@form"/>
+						</p:commandButton>
+						<p:commandButton value="Upload de poster" update="@form"
+							disabled="#{cadastrarFilmeController.entity.id == null}"
+							actionListener="#{cadastrarFilmeController.uploadDeFoto}" >
+							<f:ajax execute="@this" render="@form"/>
+						</p:commandButton>	
+						<br></br>
+						<br></br>
+						<p:commandButton value="Pesquisar Filme" update="@form"
+							actionListener="#{cadastrarFilmeController.pesquisar}">
+							<f:ajax execute="@this" render="@form"/>
+						</p:commandButton>
+					</center>
+				</f:facet>
+				
+			</p:panel>
+			</h:panelGrid>
+		</center>
+		<center>
+		<br></br>
+		<br></br>
+		<br></br>
+		<br></br>
+		<br></br>
+		<br></br>
+		<br></br>
+		<br></br>
+		<br></br>
+		<br></br>
+		<br></br>
+		<br></br><br></br>
+		<br></br>
+		
+		</center>
+		<p:confirmDialog rendered="#{cadastrarFilmeController.abirDialog2}" visible="true" style="width:600px;height:500px;" 
+		id="dialog2" widgetVar="dlg" resizable="false" draggable="true">
+			<p:panel header="poster e Back-ground do filme" style="position:relative;top: 10px;width:800px;">
+				<h:panelGrid id="grid234523" columns="2">
+					<h2>Poster:</h2>
+					<p:fileUpload id="fileUploadPoster"
+								  listener="#{cadastrarFilmeController.uploadPoster}" 
+								  mode="advanced" 
+								  update="fileUploadPoster @form"
+								  label="Selecione uma foto 1..."
+								  global="false">
+					</p:fileUpload>
+					<h2>Back-ground:</h2>
+					
+					<p:fileUpload id="fileUploadBack"
+								  listener="#{cadastrarFilmeController.uploadBack}" 
+								  mode="advanced" 
+								  update="fileUploadBack @form"
+								  label="Selecione uma foto ..."
+								  global="false">
+					</p:fileUpload>
+				</h:panelGrid>
+			</p:panel>
+		</p:confirmDialog>
+		<p:draggable for="dialog2" axis="y"/>
+		<p:confirmDialog rendered="#{cadastrarFilmeController.abirDialog}" visible="true" style="width:600px;height:500px;" 
+		id="dialog" widgetVar="dlg" resizable="false" draggable="true">
+		<p:toolbar>
+			<p:toolbarGroup>
+	            <span class="filter-container ui-input-icon-left">
+	                <i class="pi pi-search"></i>
+	                <p:inputText 
+						id="itPesquisa" 
+						value="#{cadastrarFilmeController.pesquisaNomeFilme}"
+						placeholder="Search"/>
+	            </span>
+	            <p:commandButton value="Pesquisar" update="@form"
+					actionListener="#{cadastrarFilmeController.pesquisarFilmes}">
+					<f:ajax execute="@this" render="@form @dt-Sessoes"/>
+				</p:commandButton>
+			</p:toolbarGroup>
+        </p:toolbar>
+		<h:panelGrid id="grid44" columns="2">
+        		<p:dataTable var="list" value="#{cadastrarFilmeController.listaFilmesEmCartaz}" style="width:600px;height:370px;" scrollable="true" scrollHeight="150"
+	                	 rowKey="#{list.id}" selection="#{cadastrarFilmeController.filmeEscolhido}" selectionMode="single">
+	                	 
+	               	<p:ajax event="rowSelect" listener="#{cadastrarFilmeController.filmeSelecionado}" update="@form"/>
+        			<f:facet name="header">
+        					Em cartaz
+        			</f:facet>
+		            <p:column headerText="Nome">
+		                <h:outputText value="#{list.nome}" />
+		            </p:column>
+		
+		            <p:column headerText="Diretor">
+		                <h:outputText value="#{list.diretor}" />
+		            </p:column>
+		
+		            <p:column headerText="Genero">
+		                <h:outputText value="#{list.genero}" />
+		            </p:column>
+		
+		            <p:column headerText="Classificação">
+		                <h:outputText value="#{list.classificasao}" />
+		            </p:column>
+		            <p:column headerText="Distribuidora">
+		                <h:outputText value="#{list.distribuidora}" />
+		            </p:column>
+		        </p:dataTable>
+		        <p:dataTable var="lista" value="#{cadastrarFilmeController.listaFilmesForaDeCartaz}" style="width:600px;height:370px;" scrollable="true" scrollHeight="150"
+	                	 rowKey="#{list.id}" selection="#{cadastrarFilmeController.filmeEscolhido}" selectionMode="single">
+		        	
+		        	<p:ajax event="rowSelect" listener="#{cadastrarFilmeController.filmeSelecionado}" update="@form"/>
+		        	<f:facet name="header">
+        					Fora de cartaz
+        			</f:facet>
+		            <p:column headerText="Nome">
+		                <h:outputText value="#{lista.nome}" />
+		            </p:column>
+		
+		            <p:column headerText="Diretor">
+		                <h:outputText value="#{lista.diretor}" />
+		            </p:column>
+		
+		            <p:column headerText="Genero">
+		                <h:outputText value="#{lista.genero}" />
+		            </p:column>
+		
+		            <p:column headerText="Classificação">
+		                <h:outputText value="#{lista.classificasao}" />
+		            </p:column>
+		            <p:column headerText="Distribuidora">
+		                <h:outputText value="#{lista.distribuidora}" />
+		            </p:column>
+		        </p:dataTable>
+		       </h:panelGrid>
+		  </p:confirmDialog>
+	</h:form>
+</h:body>
+</html>

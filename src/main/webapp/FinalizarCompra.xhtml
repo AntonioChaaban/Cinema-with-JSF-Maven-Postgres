@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Finalizar compra de ingressos</title>
+</h:head>
+<h:body style="margin: 0px;padding: 0px;background-color:#333333;">
+	<script type="text/javascript">
+	    function handleLoginRequest(xhr, status, args) {
+	        if(args.validationFailed || !args.loggedIn) {
+	            PF('dlg').jq.effect("shake", {times:5}, 100);
+	        }
+	        else {
+	            PF('dlg').hide();
+	            $('#loginLink').fadeOut();
+	        }
+	    }
+	    function hideBackOnLastTab() {
+	        if($("ul.ui-wizard-step-titles>li").last()
+	                 .is("ul.ui-wizard-step-titles>li.ui-state-highlight")) {
+	                $("div.ui-wizard-navbar>button.ui-wizard-nav-back").css("display", "none");
+	        }
+
+	    }
+	</script>
+	<h:form>
+		<p:sidebar widgetVar="sidebar2" position="right">
+       		<h3>Menu Hyper Filmes</h3>
+       		<p:commandLink style="position: relative;top:7px;"
+				 action="EditarUsuario.xhtml?faces-redirect=true">Alterar perfil</p:commandLink>
+			<br></br>
+			<br></br>
+			<p:commandLink style="position: relative;top:7px;"
+			 action="CadastroCartao.xhtml?faces-redirect=true">Cadastrar Cartão</p:commandLink>
+			<br></br>
+			<br></br>
+			<p:commandLink style="position: relative;top:7px;"
+			 action="MenuPrincipal.xhtml?faces-redirect=true">Menu Principal</p:commandLink>
+			 <br></br>
+			<br></br>
+			<p:commandLink style="position: relative;top:7px;" rendered="#{finalizarCompraController.usuarioMenu.perfil.id == 1}"
+			 action="MenuPrincipalAdm.xhtml?faces-redirect=true">Menu Principal Adm</p:commandLink>
+			 <br></br>
+			<br></br>
+			<p:commandLink style="position: relative;top:7px;"
+			 actionListener="#{finalizarCompraController.sair}">Sair</p:commandLink>
+	    </p:sidebar>
+		<p:growl id="growl" showDetail="true" />
+		<p:menubar style="margin: 0px;padding: 0px;background-color:#333333;border-style: none;">
+            <p:menuitem value="Nossas Redes" disabled="true" style="background-color:#ff0000;"/>
+            <p:menuitem icon="pi pi-fw pi-facebook" url="https://www.facebook.com/"/>
+            <p:menuitem icon="pi pi-fw pi-twitter" url="https://twitter.com/"/>
+            <p:menuitem icon="pi pi-fw pi-instagram" url="https://www.instagram.com/"/>
+            <p:menuitem icon="pi pi-fw pi-youtube" url="https://www.youtube.com/"/>
+        </p:menubar>
+        <p:menubar style="background-color: #000000;border-style: none;">
+            <p:menuitem outcome="/MenuPrincipal.xhtml">		
+	        	<h:graphicImage name="/images/logo2.png" height="50"/>
+        	</p:menuitem>
+            <p:menuitem value="CORPORATIVO" disabled="false" style="color: #ffffff;"/>
+            <p:menuitem value="LOCALIZAÇÃO" disabled="true"/>
+            <p:menuitem value="SNACK BAR" disabled="true"/>
+            <p:menuitem value="PROGRAMAÇÃO" disabled="true"/>
+            <f:facet name="options">
+                <p:commandButton rendered="#{finalizarCompraController.usuarioLogado == false}" actionListener="#{menuPrincipalUsuarioController.login}" value="Login" icon="pi pi-fw pi-user" styleClass="ui-button-help"/>
+                <p:commandButton rendered="#{finalizarCompraController.usuarioLogado == true}" icon="pi pi-sliders-h" type="button" onclick="PF('sidebar2').show()" styleClass="p-mr-2" />
+            </f:facet>
+        </p:menubar>
+		<center>
+			<p:panel header="Ingressos" style="position:relative;width:600px;top: 30px;">
+				<h:panelGrid id="grid" columns="1">
+				
+					<p:outputLabel value="Numero de Ingressos Selecionados: #{finalizarCompraController.valorMaximo}" />
+					<br>
+					</br>
+					<p:panel header="Filme" >
+						<h:panelGrid id="grid77" columns="2">
+							<p:outputLabel value="Fime:#{finalizarCompraController.nomeDoFilme}" />
+							<p:outputLabel value="Horario:#{finalizarCompraController.horario}" />
+							<p:outputLabel value="Sala:#{finalizarCompraController.sala}" />
+							<p:outputLabel value="Tipo de Sessao:#{finalizarCompraController.tipoDeSessao}" />
+						</h:panelGrid>
+					</p:panel>
+					
+					<div class="p-field p-col-12 p-md-4">
+		                <p:outputLabel for="@next" value="Inteira(as):"/>
+		                <p:spinner id="itInteira" value="#{finalizarCompraController.valorInteira}" min="0"  max="#{finalizarCompraController.maxInteira}">
+		                	<f:ajax execute="@this" listener="#{finalizarCompraController.atualizarNumeros}" render="@form"/>
+		                </p:spinner>
+		            </div>
+		            <div class="p-field p-col-12 p-md-4">
+		                <p:outputLabel for="@next" value="Meia(as):"/>
+		                <p:spinner id="itMeia" value="#{finalizarCompraController.valorMeia}" min="0"  max="#{finalizarCompraController.maxMeia}">
+		                	<f:ajax execute="@this" listener="#{finalizarCompraController.atualizarNumeros}" render="@form"/>
+		                </p:spinner>
+		            </div>
+		           
+                </h:panelGrid>	
+				<f:facet name="footer">
+					<center>
+						<p:commandButton value="Finalizar Compra"
+							actionListener="#{finalizarCompraController.abrirDialog}">
+							<f:ajax execute="@this" render="@form"/>
+						</p:commandButton>
+					</center>
+					
+					
+				</f:facet>
+			</p:panel>
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+		</center>
+		<p:confirmDialog rendered="#{finalizarCompraController.abirDialog}" visible="true" id="dialog" widgetVar="dlg" resizable="false" draggable="true">
+        	<p:wizard flowListener="#{finalizarCompraController.flowDoCadastro}" step="#{finalizarCompraController.step}" >
+        		<p:tab id="login" title="Login >>" disabled="#{finalizarCompraController.irParaLogin == false}">
+        		
+        		<h:panelGrid columns="2" cellpadding="5">
+		            <h:outputLabel for="username" value="Username:" />
+		            <p:inputText id="username" value="#{finalizarCompraController.usuario.email}">
+		            	<f:ajax execute="@this" render="@form"/>
+		            </p:inputText>
+		             
+		            <h:outputLabel for="password" value="Password:" />
+		            <p:password id="password" value="#{finalizarCompraController.usuario.senha}">
+		            	<f:ajax execute="@this" render="@form"/>
+		            </p:password>
+		             
+		              
+		        </h:panelGrid>
+        		
+        		</p:tab>
+        		
+        		<p:tab id="cartao" title="Cadastro Cartao >>"  disabled="#{finalizarCompraController.irParaCadastroCartao == false}">
+        		<p:panel style="width:600px;">
+				<h:panelGrid id="grid7" columns="2">
+						<p:outputLabel value="Numero no Cartao: " />
+						<h:panelGroup>
+							<p:inputText 
+								id="itNumeroNoCartao" 
+								value="#{cadastrarCartaoController.entity.numeroNoCartao}" />
+								<p:message for="itNumeroNoCartao"/>
+						</h:panelGroup>
+					
+							<p:outputLabel value="cvc: " />
+							<h:panelGroup>
+								<p:inputText 
+									id="itCvc" 
+									value="#{cadastrarCartaoController.entity.cvc}" />
+								<p:message for="itCvc"/>
+							</h:panelGroup>
+							
+							<p:outputLabel value="data de validade: " />
+							<h:panelGroup>
+								<p:inputText 
+									id="itDataDeValidade" 
+									value="#{cadastrarCartaoController.entity.dataDeValidade}" />
+								<p:message for="itDataDeValidade"/>
+							</h:panelGroup>
+						
+						<p:outputLabel value="Nome no cartão: " />
+						<h:panelGroup>
+							<p:inputText
+								id="itNomeNoCartao" 
+								value="#{cadastrarCartaoController.entity.nomeNoCartao}" />
+							<p:message for="itNomeNoCartao"/>
+						</h:panelGroup>		
+	
+					</h:panelGrid>
+				</p:panel>
+        		</p:tab>
+        		
+        		<p:tab id="comprar" title="Finalizar Compra >>">
+        			<p:panel header="Filme" >
+						<h:panelGrid id="grid4477" columns="1">
+							<p:outputLabel value="Fime:#{finalizarCompraController.nomeDoFilme}" />
+							<p:outputLabel value="Horario:#{finalizarCompraController.horario}" />
+							<p:outputLabel value="Numero de Ingressos Selecionados: #{finalizarCompraController.valorMaximo}" />
+							<p:outputLabel value="Numero de Meias: #{finalizarCompraController.valorMeia}" />
+							<p:outputLabel value="Numero de Inteiras: #{finalizarCompraController.valorInteira}" />
+							<p:outputLabel value="Sala:#{finalizarCompraController.sala}" />
+							<p:outputLabel value="Tipo de Sessao:#{finalizarCompraController.tipoDeSessao}" />
+							<p:outputLabel value="Valor total inteira:#{finalizarCompraController.maxInteira}" />
+							<p:outputLabel value="alor total meia:#{finalizarCompraController.maxMeia}" />
+							<p:commandButton value="OK" update="@form" 
+							actionListener="#{finalizarCompraController.finalizarCompra}">
+								<f:ajax execute="@this" render="@form"/>
+							</p:commandButton>
+						</h:panelGrid>
+					</p:panel>
+        		</p:tab>
+        	</p:wizard>
+    	</p:confirmDialog>
+    	<p:confirmDialog rendered="#{finalizarCompraController.temTicket == true}" visible="true" id="dialog23423" resizable="false" draggable="true">
+    		<center>
+    			<div class="p-text-center">
+		           <p:graphicImage height="300px" width="400px"
+		           		value="./resources/images/ticket.gif"/>
+		        </div>
+		    
+		        <h1>Parabéns você acabou de ganhar um ticket</h1>
+		        <h3>Vá ao adentimento no cinema e utilize para entrar em um filme</h3>
+		        <h3>Anote o codigo, não tem um ambiente para visualizar tickets</h3>
+		        <h2>#{finalizarCompraController.codigoTicket}</h2>
+		    </center>
+    	</p:confirmDialog>    
+	</h:form>
+</h:body>
+</html>

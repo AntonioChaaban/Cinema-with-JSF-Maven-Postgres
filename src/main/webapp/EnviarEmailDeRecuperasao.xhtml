@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Recuperar Senha</title>
+</h:head>
+<h:body>
+<style type="text/css">
+	.imagem{
+		position: absolute;
+	  	top: 0;
+	  	left: 0;
+		height: 100%;
+ 		width: 100%;
+ 		filter: brightness(50%);
+ 		z-index: -1;
+	}
+	.imagem2{
+		position: absolute;
+	  	top: 10;
+	  	left: 30px;
+ 		width: 8%;
+ 		z-index: -1;
+	}
+	.retangulo {
+		position: relative;
+		border-radius: 8px;
+		opacity: 0.9;
+		top: 60px;
+	  	height: 330px;
+	  	width: 450px;
+	  	background-color: #000000;
+	  	z-index: 1;
+	}
+	
+	.buton{
+		position: relative;
+		bottom: 400px;
+		right: 10px;
+		opacity: 1;
+		top: 10px;	
+		z-index: 1;
+	}
+</style>
+	<h:form>
+		<p:growl id="growl" showDetail="true" />
+		<h:graphicImage class="imagem" name="images/login.jpg"/>
+		<h:graphicImage class="imagem2" name="images/logo.png"/>
+		<center>
+			<div class="retangulo">
+				<br></br>
+				<br></br>
+				<h1 style="color:#FFFFFF">Recuperar senha</h1>
+				<br></br>
+				<br></br>
+					<p:inputText 
+							id="itEmail" 
+							value="#{esqueceuSenhaController.email}" placeholder="E-mail"/>
+							<p:message for="itEmail"/>
+				<br></br>
+				<div class="buton" >
+					<p:commandButton value="Enviar" update="@form"
+						actionListener="#{esqueceuSenhaController.enviarEmail}">
+						<f:ajax execute="@this" render="@form"/>
+					</p:commandButton>
+				</div>
+				<br></br>
+				<br></br>
+				<p:commandLink style="position: relative;right: 11px;top:7px;"
+				 action="AlterarSenha.xhtml?faces-redirect=true">Pagina para alterar a senha</p:commandLink>
+			</div>
+		</center>
+		    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+		        <div class="p-text-center">
+		           <p:graphicImage height="150px" width="200px"
+		           		value="./resources/images/loading.gif"/>
+		        </div>
+		    </p:dialog>			
+	</h:form>
+	<p:ajaxStatus onstart="PF('statusDialog').show()" delay="300" onsuccess="PF('statusDialog').hide()"/>
+</h:body>
+</html>

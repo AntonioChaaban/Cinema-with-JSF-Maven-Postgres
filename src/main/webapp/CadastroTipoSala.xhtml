@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Cadastro do tipo de sala</title>
+</h:head>
+<h:body style="margin: 0px;padding: 0px;background-color:#333333;">
+	<h:form>
+		<p:growl id="growl" showDetail="true" />
+		<p:sidebar widgetVar="sidebar2" position="right">
+       		<h3>Menu Administrador</h3>
+       		<p:commandLink style="position: relative;top:7px;"
+				 action="EditarUsuario.xhtml?faces-redirect=true">Alterar perfil</p:commandLink>
+			<br></br>
+			<br></br>
+			<p:commandLink style="position: relative;top:7px;"
+			 action="CadastroCartao.xhtml?faces-redirect=true">Cadastrar Cartão</p:commandLink>
+			<br></br>
+			<br></br>
+			<p:commandLink style="position: relative;top:7px;"
+			 action="MenuPrincipal.xhtml?faces-redirect=true">Menu Principal</p:commandLink>
+			 <br></br>
+			<br></br>
+			<p:commandLink style="position: relative;top:7px;" rendered="#{cadastroTipoSalaController.usuario.perfil.id == 1}"
+			 action="MenuPrincipalAdm.xhtml?faces-redirect=true">Menu Principal Adm</p:commandLink>
+			 <br></br>
+			<br></br>
+			<p:commandLink style="position: relative;top:7px;"
+			 actionListener="#{cadastroTipoSalaController.sair}">Sair</p:commandLink>
+	    </p:sidebar>
+		<p:menubar style="background-color: #000000;border-style: none;">
+            <p:menuitem outcome="/MenuPrincipalAdm.xhtml">		
+	        	<h:graphicImage name="/images/logo2.png" height="50"/>
+        	</p:menuitem>
+            <f:facet name="options">
+                <p:commandButton icon="pi pi-sliders-h" type="button" onclick="PF('sidebar2').show()" styleClass="p-mr-2" />
+            </f:facet>
+        </p:menubar>
+		<center>
+			<p:panel header="Cadastro do tipo de sala" style="position:relative;top: 10px;width:800px;">
+				<p:outputLabel value="Escreva o Nome do tipo de sala para encontralo" />
+				<h:panelGrid id="grid" columns="2">
+					<p:outputLabel value="Nome do Tipo de Sala:" />
+					<h:panelGroup>
+						<p:inputText 
+							id="itNomeTipoDaSala" 
+							value="#{cadastroTipoSalaController.nomeDaSala}" >
+							<f:ajax execute="@this" render="@form"/>
+							</p:inputText>
+							<p:message for="itNomeTipoDaSala"/>
+					</h:panelGroup>
+				
+					<p:outputLabel value="Declare o numero de fileiras na sala:" />
+					<h:panelGroup>
+						<p:inputText 
+							id="itQuantidadeDeFileiras" 
+							value="#{cadastroTipoSalaController.numeroDeFileiras}" >
+							<f:ajax execute="@this" listener="#{cadastroTipoSalaController.atualizarTabela}" render="@form"/>
+						</p:inputText>
+							<p:message for="itQuantidadeDeFileiras"/>
+					</h:panelGroup>
+                </h:panelGrid>	
+                <h:panelGrid id="grid2" columns="1">
+                	<p:dataTable  id="itTabela" var="list" value="#{cadastroTipoSalaController.tipoSala}" rowKey="#{list.id}" 
+                      scrollable="true" scrollHeight="250">
+			            <p:column headerText="Fileira">
+			                <h:outputText value="#{list.letraDaFileira}" />
+			            </p:column>
+			
+			            <p:column headerText="Numero de poltronas">
+			                <p:inputText 
+								id="itPoltronas" 
+								value="#{list.numeroDePoltronas}" />
+								<p:message for="itPoltronas"/>
+			            </p:column>
+			        </p:dataTable>
+
+				</h:panelGrid>
+				<f:facet name="footer">
+					<center>
+						<p:commandButton value="Cadastrar" update="@form"
+							actionListener="#{cadastroTipoSalaController.salvarEmLote}">
+							<f:ajax execute="@this" render="@form"/>
+						</p:commandButton>
+						<p:commandButton value="Desabilitar" update="@form"
+							disabled="#{cadastroTipoSalaController.entity.id==null}"
+							actionListener="#{cadastroTipoSalaController.desabilitar}" >
+							<f:ajax execute="@this" render="@form"/>
+						</p:commandButton>
+						<p:commandButton value="Limpar" update="@form"
+							actionListener="#{cadastroTipoSalaController.limpar}">
+							<f:ajax execute="@this" render="@form"/>
+						</p:commandButton>
+						<p:commandButton value="Encontrar" update="@form"
+							actionListener="#{cadastroTipoSalaController.editarTipoSala}">
+							<f:ajax execute="@this" render="@form"/>
+						</p:commandButton>
+						
+					</center>
+				</f:facet>
+			</p:panel>
+		</center>
+		<center>
+						<p:commandButton value="Pesquisar" update="@form"
+							actionListener="#{cadastroTipoSalaController.pesquisarTipoSala}">
+							<f:ajax execute="@this" render="@form"/>
+						</p:commandButton>
+		</center>
+		<p:confirmDialog rendered="#{cadastroTipoSalaController.abirDialog}" visible="true" style="width:600px;height:500px;" 
+		id="dialog" widgetVar="dlg" resizable="false" draggable="true">
+        		<p:dataTable var="list" value="#{cadastroTipoSalaController.paraDataTable}" style="width:600px;height:370px;" scrollable="true" scrollHeight="250">
+		            <p:column headerText="Nome">
+		                <h:outputText value="#{list.nomeDoTipo}" />
+		            </p:column>
+					<p:column headerText="Estado">
+		                <h:outputText value="#{list.habilitador}" />
+		            </p:column>
+		            <p:column headerText="Fileira">
+		                <h:outputText value="#{list.letraDaFileira}" />
+		            </p:column>
+		            <p:column headerText="Quantidade de poltronas">
+		                <h:outputText value="#{list.numeroDePoltronas}" />
+		            </p:column>
+		        </p:dataTable>
+		 </p:confirmDialog>
+	</h:form>
+</h:body>
+</html>

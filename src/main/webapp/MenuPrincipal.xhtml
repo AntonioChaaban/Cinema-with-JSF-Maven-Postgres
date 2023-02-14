@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Hyper Filmes</title>
+</h:head>
+<h:body style="margin: 0px;padding: 0px;background-color: #000000;">
+<style type="text/css">
+    .product-item .product-item-content {
+        border: none;
+        margin: .3rem;
+        text-align: center;
+        padding: 2rem 0;
+        background-color:#333333;
+    }
+
+    .product-item .product-image {
+        width:240px;
+	  	height:360px;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
+    }
+
+	.product-item .product-item-back {
+        border: none;
+        text-align: center;
+        background-color:#333333;
+    }
+    
+	.product-back{
+	 	width: 100%;
+	 	height : 100%;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
+	}
+	.ui-carousel-item .ui-carousel-item-active{
+		height : 100%;
+	}
+</style>
+	<h:form>
+	<p:sidebar widgetVar="sidebar2" position="right">
+       		<h3>Menu Hyper Filmes</h3>
+       		<p:commandLink style="position: relative;top:7px;"
+				 action="EditarUsuario.xhtml?faces-redirect=true">Alterar perfil</p:commandLink>
+			<br></br>
+			<br></br>
+			<p:commandLink style="position: relative;top:7px;"
+			 action="CadastroCartao.xhtml?faces-redirect=true">Cadastrar Cartão</p:commandLink>
+			<br></br>
+			<br></br>
+			<p:commandLink style="position: relative;top:7px;"
+			 action="MenuPrincipal.xhtml?faces-redirect=true">Menu Principal</p:commandLink>
+			<br></br>
+			<br></br>
+			<p:commandLink style="position: relative;top:7px;" rendered="#{menuPrincipalUsuarioController.usuario.perfil.id == 1}"
+			 action="MenuPrincipalAdm.xhtml?faces-redirect=true">Menu Principal Adm</p:commandLink>
+			<br></br>
+			<br></br>
+			<p:commandLink style="position: relative;top:7px;"
+			 actionListener="#{menuPrincipalUsuarioController.sair}">Sair</p:commandLink>
+	    </p:sidebar>
+		<p:growl id="growl" showDetail="true" />
+		
+		<p:menubar style="margin: 0px;padding: 0px;background-color:#333333;border-style: none;">
+            <p:menuitem value="Nossas Redes" disabled="true" style="background-color:#ff0000;"/>
+            <p:menuitem icon="pi pi-fw pi-facebook" url="https://www.facebook.com/"/>
+            <p:menuitem icon="pi pi-fw pi-twitter" url="https://twitter.com/"/>
+            <p:menuitem icon="pi pi-fw pi-instagram" url="https://www.instagram.com/"/>
+            <p:menuitem icon="pi pi-fw pi-youtube" url="https://www.youtube.com/"/>
+        </p:menubar>
+        <p:menubar style="background-color: #000000;border-style: none;">
+            <p:menuitem outcome="/MenuPrincipal.xhtml">		
+	        	<h:graphicImage name="/images/logo2.png" height="50"/>
+        	</p:menuitem>
+            <p:menuitem value="CORPORATIVO" disabled="false" style="color: #ffffff;"/>
+            <p:menuitem value="LOCALIZAÇÃO" disabled="true"/>
+            <p:menuitem value="SNACK BAR" disabled="true"/>
+            <p:menuitem value="PROGRAMAÇÃO" disabled="true"/>
+            <f:facet name="options">
+                <p:commandButton rendered="#{menuPrincipalUsuarioController.usuarioLogado == false}" actionListener="#{menuPrincipalUsuarioController.login}" value="Login" icon="pi pi-fw pi-user" styleClass="ui-button-help"/>
+                <p:commandButton rendered="#{menuPrincipalUsuarioController.usuarioLogado == true}" icon="pi pi-sliders-h" type="button" onclick="PF('sidebar2').show()" styleClass="p-mr-2" />
+            </f:facet>
+        </p:menubar>
+		<div class="card">
+	        <p:carousel value="#{menuPrincipalUsuarioController.listaFilmes}" var="list" circular="true" autoplayInterval="8000"
+	                    responsiveOptions="#{carouselView.responsiveOptions}" numVisible="1" numScroll="1">
+	                
+	                <p:commandLink actionListener="#{menuPrincipalUsuarioController.filmeSelecionado(list)}" style="margin: 0px;padding: 0px;border-style: none;">
+		                <div class="product-item" >
+			                <div class="product-item-back">
+								<h:graphicImage url="img-filmes?nome=#{list.imagemBackground}.png"  styleClass="product-back"/>	
+				            </div>
+			            </div>       
+	                </p:commandLink>
+	        </p:carousel>
+	    </div>
+	    <br></br>
+	    <br></br>
+	    <br></br>
+	    <center>
+	    <p:commandLink actionListener="#{menuPrincipalUsuarioController.filmeSelecionado(list)}" style="margin: 0px;padding: 0px;border-style: none;">
+          	<center>
+                   
+				<h:graphicImage name="images/cupon.png" styleClass="product-image"/>
+			</center>			
+              
+        </p:commandLink>
+        </center>
+	    <br></br>
+	    <br></br>
+	    <br></br>
+	    <br></br>
+	    <br></br>
+         <div class="card">
+	        <p:carousel value="#{menuPrincipalUsuarioController.listaFilmes}" var="list" numVisible="4" numScroll="2"
+	        responsiveOptions="#{menuPrincipalUsuarioController.responsiveOptions}">
+	        
+	            <f:facet name="header">
+	            <div>
+	            	<center>
+	                <h1 class="p-mb-1" style="color:#c0c0c0;" >Filmes em Cartaz</h1>
+	                </center>
+	            </div>
+	            </f:facet>
+	            <p:commandLink actionListener="#{menuPrincipalUsuarioController.filmeSelecionado(list)}" >
+	            
+	             <div class="product-item" >
+	                <div class="product-item-content">
+	                
+	                    <div class="p-mb-3">
+	                        
+							<h:graphicImage url="img-filmes?nome=#{list.imagemPoster}.png" styleClass="product-image"/>
+							
+	                    </div>
+	                    <div>
+	                        <h4 class="p-mb-1">#{list.nome}</h4>
+	                    </div>
+	                </div>
+	            </div>
+	            </p:commandLink>
+
+	            
+	        </p:carousel>
+	    </div>
+	</h:form>
+</h:body>
+</html>

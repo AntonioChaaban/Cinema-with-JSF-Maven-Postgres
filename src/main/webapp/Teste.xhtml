@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Finalizar compra de ingressos</title>
+</h:head>
+<h:body>
+	<script type="text/javascript">
+	    function handleLoginRequest(xhr, status, args) {
+	        if(args.validationFailed || !args.loggedIn) {
+	            PF('dlg').jq.effect("shake", {times:5}, 100);
+	        }
+	        else {
+	            PF('dlg').hide();
+	            $('#loginLink').fadeOut();
+	        }
+	    }
+	</script>
+	<h:form>
+		<p:growl id="growl" showDetail="true" />
+		<center>
+			<p:panel header="Ingressos" style="width:800px;">	
+				<f:facet name="footer">
+					<center>
+						<p:commandButton value="Finalizar Compra"
+							actionListener="#{finalizarCompraController.abrirDialog}">
+							<f:ajax execute="@this" render="@form"/>
+						</p:commandButton>
+					</center>
+					
+					
+				</f:facet>
+			</p:panel>
+		</center>
+		<p:confirmDialog rendered="#{finalizarCompraController.abirDialog}" visible="true" id="dialog" widgetVar="dlg" resizable="false" draggable="false">
+		<p:panelGrid columns="1">
+			<div class="card">
+				    <p:steps activeIndex="1">
+				        <p:menuitem value="Login"/>
+				        <p:menuitem value="Cadastro Cartao"/>
+				        <p:menuitem value="Pagamento"/>
+				    </p:steps>
+				</div>
+        	<p:wizard flowListener="#{finalizarCompraController.flowDoCadastro}" showStepStatus="false">
+        		<p:tab id="login" title="Login >>"  disabled="#{finalizarCompraController.irParaLogin == false}">
+        		<p:panel style="width:700px;heig:400px;">
+        		<h:panelGrid columns="2" cellpadding="5">
+		            <h:outputLabel for="username" value="Username:" />
+		            <p:inputText id="username" value="#{finalizarCompraController.usuario.email}" required="true" label="username" />
+		             
+		            <h:outputLabel for="password" value="Password:" />
+		            <p:password id="password" value="#{finalizarCompraController.usuario.senha}" required="true" label="password" />
+		             
+		            <f:facet name="footer">
+		                <p:commandButton value="Login" update="growl" actionListener="#{finalizarCompraController.logar}"
+		                                 oncomplete="handleLoginRequest(xhr, status, args)" >
+		                                 <f:ajax execute="@this" render="@form"/>
+		                </p:commandButton>
+		            </f:facet>  
+		        </h:panelGrid>
+        		</p:panel>
+        		</p:tab>
+        		
+        		<p:tab id="cartao" title="Cadastro Cartao >>" disabled="#{finalizarCompraController.irParaCadastroCartao == false}">
+        		<p:panel style="width:700px;heig:400px;">
+				<h:panelGrid id="grid7" columns="2">
+						<p:outputLabel value="Numero no Cartao: " />
+						<h:panelGroup>
+							<p:inputText 
+								id="itNumeroNoCartao" 
+								value="#{cadastrarCartaoController.entity.numeroNoCartao}" />
+								<p:message for="itNumeroNoCartao"/>
+						</h:panelGroup>
+					
+							<p:outputLabel value="cvc: " />
+							<h:panelGroup>
+								<p:inputText 
+									id="itCvc" 
+									value="#{cadastrarCartaoController.entity.cvc}" />
+								<p:message for="itCvc"/>
+							</h:panelGroup>
+							
+							<p:outputLabel value="data de validade: " />
+							<h:panelGroup>
+								<p:inputText 
+									id="itDataDeValidade" 
+									value="#{cadastrarCartaoController.entity.dataDeValidade}" />
+								<p:message for="itDataDeValidade"/>
+							</h:panelGroup>
+						
+						<p:outputLabel value="Nome no cartão: " />
+						<h:panelGroup>
+							<p:inputText
+								id="itNomeNoCartao" 
+								value="#{cadastrarCartaoController.entity.nomeNoCartao}" />
+							<p:message for="itNomeNoCartao"/>
+						</h:panelGroup>		
+	
+					</h:panelGrid>
+					<f:facet name="footer">
+						<center>
+							<p:commandButton value="Cadastrar"
+								
+								actionListener="#{cadastrarCartaoController.salvarComTransisao}" update="grid">
+							</p:commandButton>
+						</center>
+					</f:facet>
+				</p:panel>
+        		</p:tab>
+        		
+        		<p:tab id="comprar" title="Finalizar Compra >>">
+	        		<p:panel style="width:700px;heig:400px;">
+	        			<center>
+							<p:commandButton value="Cadastrar"
+								
+								actionListener="#{cadastrarCartaoController.salvarComTransisao}" update="grid">
+							</p:commandButton>
+						</center>
+	        		</p:panel>
+        		</p:tab>
+        	</p:wizard>
+        	</p:panelGrid>
+    	</p:confirmDialog>    
+	</h:form>
+</h:body>
+</html>
